@@ -21,10 +21,48 @@
 
     body {
       font-family: 'Raleway', sans-serif;
-      background: var(--green-dark);
+      background: #0a1f14;
       color: var(--cream);
       overflow-x: hidden;
       cursor: default;
+    }
+
+    /* ═══ ЖИВОЙ MESH-ФОН (медленно переливается) ═══ */
+    .mesh-bg {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background:
+        radial-gradient(ellipse 70% 60% at 15% 20%, rgba(42,110,66,.55) 0%, transparent 55%),
+        radial-gradient(ellipse 60% 55% at 85% 25%, rgba(26,74,46,.6) 0%, transparent 50%),
+        radial-gradient(ellipse 80% 70% at 75% 80%, rgba(42,110,66,.45) 0%, transparent 55%),
+        radial-gradient(ellipse 55% 50% at 20% 85%, rgba(20,60,38,.6) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(212,180,131,.06) 0%, transparent 45%),
+        linear-gradient(135deg, #0c2418 0%, #08160e 50%, #0a1f14 100%);
+      background-size: 200% 200%, 200% 200%, 200% 200%, 200% 200%, 100% 100%, 100% 100%;
+      animation: meshMove 28s ease-in-out infinite;
+    }
+    @keyframes meshMove {
+      0%   { background-position: 0% 0%, 100% 0%, 100% 100%, 0% 100%, 50% 50%, 0 0; }
+      25%  { background-position: 40% 20%, 60% 30%, 70% 80%, 20% 70%, 50% 50%, 0 0; }
+      50%  { background-position: 100% 100%, 0% 100%, 0% 0%, 100% 0%, 50% 50%, 0 0; }
+      75%  { background-position: 60% 80%, 40% 60%, 30% 20%, 80% 30%, 50% 50%, 0 0; }
+      100% { background-position: 0% 0%, 100% 0%, 100% 100%, 0% 100%, 50% 50%, 0 0; }
+    }
+
+    /* мягкое золотое свечение поверх mesh */
+    .mesh-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle 400px at 30% 30%, rgba(212,180,131,.08) 0%, transparent 100%),
+        radial-gradient(circle 500px at 70% 70%, rgba(212,180,131,.06) 0%, transparent 100%);
+      animation: meshGlow 18s ease-in-out infinite alternate;
+    }
+    @keyframes meshGlow {
+      0%   { opacity: .5; transform: scale(1); }
+      100% { opacity: 1; transform: scale(1.1); }
     }
 
     /* ═══ ПРОГРЕСС-БАР ПРОКРУТКИ ═══ */
@@ -435,7 +473,7 @@
     /* ── HERO ─────────────────────────────────── */
     .hero {
       min-height: 100vh;
-      background: radial-gradient(ellipse at 55% 35%, #2a6e42 0%, #1a4a2e 40%, #0a1f12 100%);
+      background: radial-gradient(ellipse at 55% 35%, rgba(42,110,66,.4) 0%, rgba(26,74,46,.25) 40%, transparent 100%);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -747,7 +785,7 @@
     .reveal-right.visible { opacity: 1; transform: translateX(0); }
 
     /* ══ SERVICES — world-class ═══════════════ */
-    .services { background: linear-gradient(180deg, #0a1f12 0%, #111f16 100%); }
+    .services { background: linear-gradient(180deg, rgba(10,31,18,.82) 0%, rgba(17,31,22,.78) 100%); }
 
     .services-header {
       display: grid;
@@ -848,7 +886,7 @@
     .service-row:hover .service-row-arrow { color: var(--gold); transform: translateX(4px); }
 
     /* ── PORTFOLIO ───────────────────────────── */
-    .portfolio { background: linear-gradient(180deg, #0a1a10 0%, #0f2318 100%); }
+    .portfolio { background: linear-gradient(180deg, rgba(10,26,16,.78) 0%, rgba(15,35,24,.82) 100%); }
 
     .portfolio-filter {
       display: flex;
@@ -1058,7 +1096,7 @@
 
     /* ══ ABOUT / STATS — world-class ══════════ */
     .stats {
-      background: radial-gradient(ellipse at 30% 50%, #1a4a2e 0%, #0d2818 60%);
+      background: radial-gradient(ellipse at 30% 50%, rgba(26,74,46,.5) 0%, rgba(13,40,24,.4) 60%);
       padding: 96px 20px;
     }
 
@@ -1152,7 +1190,7 @@
     .about-stat-fill.animated { transform: scaleX(1); }
 
     /* ── CONTACT ──────────────────────────────── */
-    .contact { background: linear-gradient(180deg, #111f16 0%, #0a1a10 100%); }
+    .contact { background: linear-gradient(180deg, rgba(17,31,22,.78) 0%, rgba(10,26,16,.85) 100%); }
 
     .contact-grid {
       display: grid;
@@ -1262,6 +1300,9 @@
   </style>
 </head>
 <body>
+
+<!-- ═══ ЖИВОЙ MESH-ФОН ═══ -->
+<div class="mesh-bg"></div>
 
 <!-- ═══ ПРОГРЕСС-БАР ПРОКРУТКИ ═══ -->
 <div class="scroll-progress" id="scrollProgress"></div>
