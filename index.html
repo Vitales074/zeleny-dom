@@ -840,14 +840,11 @@
     }
     .services-tagline::after { content: ''; flex: 1; height: 1px; background: linear-gradient(to right, var(--gold), transparent); }
 
-    /* список услуг */
+    /* список услуг — стеклянные карточки (glassmorphism) */
     .services-list {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 0;
-      border: 1px solid rgba(212,180,131,.1);
-      border-radius: 6px;
-      overflow: hidden;
+      gap: 14px;
       margin-bottom: 16px;
     }
     @media (max-width: 640px) { .services-list { grid-template-columns: 1fr; } }
@@ -855,54 +852,86 @@
     .service-row {
       display: flex;
       align-items: center;
-      gap: 18px;
-      padding: 20px 24px;
-      border-bottom: 1px solid rgba(212,180,131,.08);
-      border-right: 1px solid rgba(212,180,131,.08);
-      transition: background .25s;
+      gap: 16px;
+      padding: 20px 22px;
       position: relative;
       overflow: hidden;
+      border-radius: 14px;
+      background: rgba(255,255,255,.035);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(212,180,131,.14);
+      transition: background .3s, border-color .3s, box-shadow .4s;
     }
-    .service-row:nth-child(even) { border-right: none; }
-    .service-row:nth-last-child(-n+2) { border-bottom: none; }
+    /* градиентная подсветка-обводка появляется при наведении */
     .service-row::before {
       content: '';
       position: absolute;
-      left: 0; top: 0; bottom: 0; width: 3px;
-      background: var(--gold);
-      transform: scaleY(0);
-      transform-origin: bottom;
-      transition: transform .3s;
+      inset: 0;
+      border-radius: 14px;
+      padding: 1px;
+      background: linear-gradient(135deg, rgba(212,180,131,.6), transparent 40%, transparent 60%, rgba(42,110,66,.5));
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0;
+      transition: opacity .35s;
     }
-    .service-row:hover { background: rgba(212,180,131,.05); }
-    .service-row:hover::before { transform: scaleY(1); }
+    .service-row:hover {
+      background: rgba(212,180,131,.06);
+      border-color: transparent;
+      box-shadow: 0 16px 40px rgba(0,0,0,.35), 0 0 30px rgba(212,180,131,.1);
+    }
+    .service-row:hover::before { opacity: 1; }
 
+    /* номер в углу */
     .service-row-num {
       font-family: 'Cinzel', serif;
-      font-size: .65rem;
-      color: rgba(212,180,131,.25);
-      min-width: 22px;
+      font-size: .6rem;
+      color: rgba(212,180,131,.3);
       letter-spacing: .05em;
       flex-shrink: 0;
+      position: absolute;
+      top: 10px; right: 14px;
     }
-    .service-row-icon { font-size: 1.3rem; flex-shrink: 0; opacity: .6; transition: opacity .25s, transform .25s; }
-    .service-row:hover .service-row-icon { opacity: 1; transform: scale(1.2); }
+    /* иконка в золотом стеклянном кружке */
+    .service-row-icon {
+      font-size: 1.4rem;
+      flex-shrink: 0;
+      width: 48px; height: 48px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 12px;
+      background: linear-gradient(145deg, rgba(212,180,131,.18), rgba(42,110,66,.12));
+      border: 1px solid rgba(212,180,131,.2);
+      transition: transform .35s cubic-bezier(.16,1,.3,1), box-shadow .35s;
+    }
+    .service-row:hover .service-row-icon {
+      transform: scale(1.1) rotate(-5deg);
+      box-shadow: 0 0 24px rgba(212,180,131,.3);
+    }
     .service-row-body { flex: 1; }
     .service-row-title {
       font-family: 'Raleway', sans-serif;
-      font-size: 1.05rem; font-weight: 700;
+      font-size: 1.02rem; font-weight: 700;
       color: var(--cream);
-      letter-spacing: .04em;
+      letter-spacing: .02em;
       margin-bottom: 3px;
+      transition: color .25s;
     }
-    .service-row-text { font-size: .9rem; color: rgba(240,234,216,.55); line-height: 1.5; }
+    .service-row:hover .service-row-title {
+      background: linear-gradient(90deg, var(--gold), #f0d080);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .service-row-text { font-size: .85rem; color: rgba(240,234,216,.5); line-height: 1.5; }
     .service-row-arrow {
-      color: rgba(212,180,131,.2);
-      font-size: .8rem;
+      color: rgba(212,180,131,.25);
+      font-size: .85rem;
       transition: color .25s, transform .25s;
       flex-shrink: 0;
     }
-    .service-row:hover .service-row-arrow { color: var(--gold); transform: translateX(4px); }
+    .service-row:hover .service-row-arrow { color: var(--gold); transform: translateX(5px); }
 
     /* ── PORTFOLIO ───────────────────────────── */
     .portfolio { background: linear-gradient(90deg, transparent 0%, rgba(9,24,15,.7) 18%, rgba(9,24,15,.7) 82%, transparent 100%); }
@@ -1259,28 +1288,78 @@
       padding-bottom: 12px;
       border-bottom: 1px solid rgba(212,180,131,.2);
     }
+    /* контактные строки — стеклянные карточки */
     .contact-row {
       display: flex;
-      align-items: flex-start;
+      align-items: center;
       gap: 16px;
-      margin-bottom: 20px;
+      margin-bottom: 14px;
+      padding: 16px 18px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.035);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(212,180,131,.14);
+      transition: background .3s, border-color .3s, box-shadow .4s, transform .35s cubic-bezier(.16,1,.3,1);
+      position: relative;
+      overflow: hidden;
     }
-    .contact-row .ico { font-size: 1.05rem; margin-top: 3px; flex-shrink: 0; }
+    .contact-row::before {
+      content: '';
+      position: absolute;
+      inset: 0; border-radius: 14px; padding: 1px;
+      background: linear-gradient(135deg, rgba(212,180,131,.6), transparent 45%, transparent 55%, rgba(42,110,66,.5));
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor; mask-composite: exclude;
+      opacity: 0; transition: opacity .35s;
+    }
+    .contact-row:hover {
+      background: rgba(212,180,131,.06);
+      border-color: transparent;
+      transform: translateX(6px);
+      box-shadow: 0 14px 36px rgba(0,0,0,.35), 0 0 26px rgba(212,180,131,.1);
+    }
+    .contact-row:hover::before { opacity: 1; }
+
+    /* иконка контакта в золотом кружке */
+    .contact-row .ico {
+      font-size: 1.25rem;
+      flex-shrink: 0;
+      width: 46px; height: 46px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 12px;
+      background: linear-gradient(145deg, rgba(212,180,131,.18), rgba(42,110,66,.12));
+      border: 1px solid rgba(212,180,131,.2);
+      transition: transform .35s cubic-bezier(.16,1,.3,1), box-shadow .35s;
+    }
+    .contact-row:hover .ico {
+      transform: scale(1.1) rotate(-5deg);
+      box-shadow: 0 0 22px rgba(212,180,131,.3);
+    }
+    .contact-row .info { flex: 1; }
     .contact-row .info a,
     .contact-row .info span {
       display: block;
-      font-size: .9rem;
+      font-size: .98rem;
+      font-weight: 600;
       color: var(--cream);
       text-decoration: none;
-      line-height: 1.55;
+      line-height: 1.5;
       transition: color .2s;
     }
-    .contact-row .info a:hover { color: var(--gold); }
+    .contact-row:hover .info a,
+    .contact-row:hover .info > span:first-child {
+      background: linear-gradient(90deg, var(--gold), #f0d080);
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
     .contact-row .info .sub {
-      font-size: .7rem;
+      font-size: .72rem;
+      font-weight: 400;
       color: rgba(240,234,216,.45);
-      letter-spacing: .07em;
-      margin-top: 2px;
+      letter-spacing: .06em;
+      margin-top: 3px;
+      -webkit-text-fill-color: rgba(240,234,216,.45) !important;
     }
 
     .social-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
