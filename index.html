@@ -33,36 +33,55 @@
       inset: 0;
       z-index: -2;
       background:
-        radial-gradient(ellipse 70% 60% at 15% 20%, rgba(42,110,66,.55) 0%, transparent 55%),
-        radial-gradient(ellipse 60% 55% at 85% 25%, rgba(26,74,46,.6) 0%, transparent 50%),
-        radial-gradient(ellipse 80% 70% at 75% 80%, rgba(42,110,66,.45) 0%, transparent 55%),
-        radial-gradient(ellipse 55% 50% at 20% 85%, rgba(20,60,38,.6) 0%, transparent 50%),
-        radial-gradient(circle at 50% 50%, rgba(212,180,131,.06) 0%, transparent 45%),
-        linear-gradient(135deg, #0c2418 0%, #08160e 50%, #0a1f14 100%);
-      background-size: 200% 200%, 200% 200%, 200% 200%, 200% 200%, 100% 100%, 100% 100%;
-      animation: meshMove 28s ease-in-out infinite;
+        radial-gradient(ellipse 60% 55% at 12% 18%, rgba(58,140,86,.85) 0%, transparent 55%),
+        radial-gradient(ellipse 55% 50% at 88% 22%, rgba(36,96,60,.9) 0%, transparent 50%),
+        radial-gradient(ellipse 70% 60% at 80% 82%, rgba(52,128,80,.75) 0%, transparent 55%),
+        radial-gradient(ellipse 50% 48% at 18% 85%, rgba(30,80,50,.9) 0%, transparent 50%),
+        radial-gradient(circle 40% at 50% 50%, rgba(212,180,131,.14) 0%, transparent 50%),
+        linear-gradient(135deg, #0f2c1c 0%, #0a1c12 50%, #0d2418 100%);
+      background-size: 200% 200%, 200% 200%, 200% 200%, 200% 200%, 150% 150%, 100% 100%;
+      animation: meshMove 24s ease-in-out infinite;
     }
     @keyframes meshMove {
       0%   { background-position: 0% 0%, 100% 0%, 100% 100%, 0% 100%, 50% 50%, 0 0; }
-      25%  { background-position: 40% 20%, 60% 30%, 70% 80%, 20% 70%, 50% 50%, 0 0; }
-      50%  { background-position: 100% 100%, 0% 100%, 0% 0%, 100% 0%, 50% 50%, 0 0; }
-      75%  { background-position: 60% 80%, 40% 60%, 30% 20%, 80% 30%, 50% 50%, 0 0; }
+      25%  { background-position: 50% 30%, 50% 40%, 60% 70%, 30% 60%, 30% 40%, 0 0; }
+      50%  { background-position: 100% 100%, 0% 100%, 0% 0%, 100% 0%, 70% 60%, 0 0; }
+      75%  { background-position: 50% 70%, 50% 50%, 40% 30%, 70% 40%, 40% 70%, 0 0; }
       100% { background-position: 0% 0%, 100% 0%, 100% 100%, 0% 100%, 50% 50%, 0 0; }
     }
 
-    /* мягкое золотое свечение поверх mesh */
-    .mesh-bg::after {
-      content: '';
-      position: absolute;
+    /* ═══ ГЛОБАЛЬНЫЕ ОРБЫ НА ВЕСЬ ЭКРАН (видны по бокам) ═══ */
+    .global-orbs {
+      position: fixed;
       inset: 0;
-      background:
-        radial-gradient(circle 400px at 30% 30%, rgba(212,180,131,.08) 0%, transparent 100%),
-        radial-gradient(circle 500px at 70% 70%, rgba(212,180,131,.06) 0%, transparent 100%);
-      animation: meshGlow 18s ease-in-out infinite alternate;
+      z-index: -1;
+      pointer-events: none;
+      overflow: hidden;
     }
-    @keyframes meshGlow {
-      0%   { opacity: .5; transform: scale(1); }
-      100% { opacity: 1; transform: scale(1.1); }
+    .g-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(70px);
+      will-change: transform;
+    }
+    .g-orb.green { background: radial-gradient(circle, rgba(64,150,92,.55) 0%, transparent 70%); }
+    .g-orb.gold  { background: radial-gradient(circle, rgba(212,180,131,.32) 0%, transparent 70%); }
+    .g-orb.g1 { width: 500px; height: 500px; top: 5%;   left: -8%;  animation: gDrift1 22s ease-in-out infinite; }
+    .g-orb.g2 { width: 450px; height: 450px; top: 30%;  right: -10%; animation: gDrift2 26s ease-in-out infinite; }
+    .g-orb.g3 { width: 400px; height: 400px; bottom: 8%; left: -6%;  animation: gDrift3 20s ease-in-out infinite; }
+    .g-orb.g4 { width: 360px; height: 360px; bottom: 20%; right: -7%; animation: gDrift1 28s ease-in-out infinite; }
+    .g-orb.g5 { width: 320px; height: 320px; top: 55%; left: 8%;     animation: gDrift2 24s ease-in-out infinite; }
+    @keyframes gDrift1 {
+      0%,100% { transform: translate(0,0) scale(1); }
+      50% { transform: translate(80px,60px) scale(1.18); }
+    }
+    @keyframes gDrift2 {
+      0%,100% { transform: translate(0,0) scale(1); }
+      50% { transform: translate(-70px,50px) scale(1.12); }
+    }
+    @keyframes gDrift3 {
+      0%,100% { transform: translate(0,0) scale(1); }
+      50% { transform: translate(60px,-50px) scale(1.2); }
     }
 
     /* ═══ ПРОГРЕСС-БАР ПРОКРУТКИ ═══ */
@@ -785,7 +804,7 @@
     .reveal-right.visible { opacity: 1; transform: translateX(0); }
 
     /* ══ SERVICES — world-class ═══════════════ */
-    .services { background: linear-gradient(180deg, rgba(10,31,18,.82) 0%, rgba(17,31,22,.78) 100%); }
+    .services { background: linear-gradient(90deg, transparent 0%, rgba(8,22,14,.72) 18%, rgba(8,22,14,.72) 82%, transparent 100%); }
 
     .services-header {
       display: grid;
@@ -886,7 +905,7 @@
     .service-row:hover .service-row-arrow { color: var(--gold); transform: translateX(4px); }
 
     /* ── PORTFOLIO ───────────────────────────── */
-    .portfolio { background: linear-gradient(180deg, rgba(10,26,16,.78) 0%, rgba(15,35,24,.82) 100%); }
+    .portfolio { background: linear-gradient(90deg, transparent 0%, rgba(9,24,15,.7) 18%, rgba(9,24,15,.7) 82%, transparent 100%); }
 
     /* ═══ СВЕТЯЩИЕСЯ ОРБЫ ДЛЯ ЗАПОЛНЕНИЯ ФОНА ═══ */
     .section-orbs { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
@@ -1218,7 +1237,7 @@
     .about-stat-fill.animated { transform: scaleX(1); }
 
     /* ── CONTACT ──────────────────────────────── */
-    .contact { background: linear-gradient(180deg, rgba(17,31,22,.78) 0%, rgba(10,26,16,.85) 100%); }
+    .contact { background: linear-gradient(90deg, transparent 0%, rgba(9,22,14,.72) 18%, rgba(9,22,14,.72) 82%, transparent 100%); }
 
     .contact-grid {
       display: grid;
@@ -1331,6 +1350,15 @@
 
 <!-- ═══ ЖИВОЙ MESH-ФОН ═══ -->
 <div class="mesh-bg"></div>
+
+<!-- ═══ ГЛОБАЛЬНЫЕ ОРБЫ (по всему экрану, видны по бокам) ═══ -->
+<div class="global-orbs">
+  <div class="g-orb green g1"></div>
+  <div class="g-orb gold g2"></div>
+  <div class="g-orb green g3"></div>
+  <div class="g-orb gold g4"></div>
+  <div class="g-orb green g5"></div>
+</div>
 
 <!-- ═══ ПРОГРЕСС-БАР ПРОКРУТКИ ═══ -->
 <div class="scroll-progress" id="scrollProgress"></div>
