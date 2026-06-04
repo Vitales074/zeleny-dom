@@ -27,6 +27,56 @@
       cursor: default;
     }
 
+    /* ═══ ПРЕЛОАДЕР (экран загрузки) ═══ */
+    .preloader {
+      position: fixed;
+      inset: 0;
+      z-index: 100000;
+      background: linear-gradient(135deg, #0c2418 0%, #08160e 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 28px;
+      transition: opacity .8s ease, visibility .8s;
+    }
+    .preloader.hide { opacity: 0; visibility: hidden; }
+    .preloader-logo svg { width: 150px; height: auto; }
+    /* линии домика рисуются */
+    .preloader-logo path,
+    .preloader-logo line,
+    .preloader-logo polyline,
+    .preloader-logo rect {
+      stroke-dasharray: 1000;
+      stroke-dashoffset: 1000;
+      animation: drawLine 2s ease forwards;
+    }
+    @keyframes drawLine { to { stroke-dashoffset: 0; } }
+    .preloader-text {
+      font-family: 'Cinzel', serif;
+      font-size: 1rem;
+      letter-spacing: .5em;
+      text-transform: uppercase;
+      color: var(--gold);
+      opacity: 0;
+      animation: fadeInUp .8s ease 1.2s forwards;
+      padding-left: .5em;
+    }
+    .preloader-bar {
+      width: 180px; height: 2px;
+      background: rgba(212,180,131,.15);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .preloader-bar span {
+      display: block; height: 100%;
+      background: linear-gradient(to right, var(--gold), #f0d080);
+      width: 0;
+      animation: loadBar 2s ease forwards;
+    }
+    @keyframes loadBar { to { width: 100%; } }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
     /* ═══ ЖИВОЙ MESH-ФОН (медленно переливается) ═══ */
     .mesh-bg {
       position: fixed;
@@ -576,6 +626,36 @@
     }
     .logo-wrap svg { width: 100%; height: 100%; }
 
+    /* живой бейдж "принимаем заказы" */
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 8px 18px;
+      border-radius: 30px;
+      background: rgba(42,110,66,.18);
+      border: 1px solid rgba(64,150,92,.4);
+      backdrop-filter: blur(8px);
+      font-size: .7rem;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: #8fd4a8;
+      font-weight: 600;
+      margin-bottom: 22px;
+    }
+    .hero-badge-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #4ade80;
+      box-shadow: 0 0 0 0 rgba(74,222,128,.6);
+      animation: livePulse 2s infinite;
+    }
+    @keyframes livePulse {
+      0% { box-shadow: 0 0 0 0 rgba(74,222,128,.6); }
+      70% { box-shadow: 0 0 0 10px rgba(74,222,128,0); }
+      100% { box-shadow: 0 0 0 0 rgba(74,222,128,0); }
+    }
+
     .hero-est {
       font-family: 'Cinzel', serif;
       font-size: .72rem;
@@ -587,14 +667,23 @@
     }
     .hero-title {
       font-family: 'Cinzel', serif;
-      font-size: clamp(1.5rem, 4vw, 2.4rem);
+      font-size: clamp(1.8rem, 4.5vw, 2.8rem);
       font-weight: 700;
-      color: var(--white);
       letter-spacing: .1em;
       line-height: 1.22;
       text-transform: uppercase;
-      text-shadow: 0 2px 20px rgba(0,0,0,.5);
       margin-bottom: 10px;
+      /* переливающийся золотой градиент */
+      background: linear-gradient(110deg, #f0ead8 0%, #f0d080 25%, #fff6d8 40%, #d4b483 55%, #f0ead8 75%, #f0d080 100%);
+      background-size: 250% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shimmerText 5s linear infinite;
+      filter: drop-shadow(0 2px 16px rgba(212,180,131,.25));
+    }
+    @keyframes shimmerText {
+      to { background-position: 250% center; }
     }
     .hero-tag {
       font-size: clamp(.78rem, 2vw, .95rem);
@@ -608,7 +697,7 @@
     .btn-primary {
       display: inline-block;
       padding: 14px 38px;
-      background: var(--gold);
+      background: linear-gradient(135deg, #f0d080, var(--gold), #b8904a);
       color: var(--green-dark);
       font-family: 'Raleway', sans-serif;
       font-size: .78rem;
@@ -616,10 +705,27 @@
       letter-spacing: .18em;
       text-transform: uppercase;
       text-decoration: none;
-      border-radius: 2px;
+      border-radius: 3px;
       transition: all .3s;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 6px 20px rgba(212,180,131,.3);
     }
-    .btn-primary:hover { background: #c9a46e; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.3); }
+    /* блик пробегает по кнопке */
+    .btn-primary::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -120%;
+      width: 80%; height: 100%;
+      background: linear-gradient(120deg, transparent, rgba(255,255,255,.55), transparent);
+      transform: skewX(-20deg);
+      animation: btnShine 3.5s ease-in-out infinite;
+    }
+    @keyframes btnShine {
+      0%, 100% { left: -120%; }
+      40%, 60% { left: 130%; }
+    }
+    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(212,180,131,.45); }
 
     .btn-outline {
       display: inline-block;
@@ -1427,6 +1533,23 @@
 </head>
 <body>
 
+<!-- ═══ ПРЕЛОАДЕР ═══ -->
+<div class="preloader" id="preloader">
+  <div class="preloader-logo">
+    <svg viewBox="0 0 280 150" xmlns="http://www.w3.org/2000/svg">
+      <path d="M22 120 A100 100 0 0 1 258 120" fill="none" stroke="#d4b483" stroke-width="2"/>
+      <rect x="60" y="78" width="160" height="42" fill="none" stroke="#d4b483" stroke-width="2"/>
+      <polyline points="118,78 140,58 162,78" fill="none" stroke="#d4b483" stroke-width="2" stroke-linejoin="round"/>
+      <rect x="130" y="92" width="20" height="28" fill="none" stroke="#d4b483" stroke-width="1.5"/>
+      <rect x="74" y="88" width="18" height="14" fill="none" stroke="#d4b483" stroke-width="1.2"/>
+      <rect x="188" y="88" width="18" height="14" fill="none" stroke="#d4b483" stroke-width="1.2"/>
+      <line x1="22" y1="120" x2="258" y2="120" stroke="#d4b483" stroke-width="2"/>
+    </svg>
+  </div>
+  <div class="preloader-text">Зеленый Дом</div>
+  <div class="preloader-bar"><span></span></div>
+</div>
+
 <!-- ═══ ЖИВОЙ MESH-ФОН ═══ -->
 <div class="mesh-bg"></div>
 
@@ -1596,7 +1719,8 @@
     </svg>
   </div>
 
-  <p class="hero-est">Снежинск &nbsp;·&nbsp; Est. 2000 &nbsp;·&nbsp; Рекламное производство</p>
+  <div class="hero-badge"><span class="hero-badge-dot"></span>Принимаем заказы · Снежинск</div>
+  <p class="hero-est">Est. 2000 &nbsp;·&nbsp; Рекламное производство</p>
   <h1 class="hero-title">Зеленый Дом</h1>
   <p class="hero-tag">Вывески &nbsp;·&nbsp; Печать &nbsp;·&nbsp; Фрезеровка &nbsp;·&nbsp; Лазерная резка &nbsp;·&nbsp; Полиграфия</p>
 
@@ -2073,6 +2197,15 @@
     }
   }
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox({ target: document.getElementById('lightbox') }); });
+
+  // ═══ ПРЕЛОАДЕР: скрыть после загрузки ═══
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      document.getElementById('preloader')?.classList.add('hide');
+    }, 2100);
+  });
+  // страховка — скрыть максимум через 3.5с
+  setTimeout(() => document.getElementById('preloader')?.classList.add('hide'), 3500);
 
   // ═══ ПРОГРЕСС-БАР + 3D-ПАРАЛЛАКС ГЛУБИНЫ HERO ═══
   const heroEl = document.querySelector('.hero');
