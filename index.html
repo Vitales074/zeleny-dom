@@ -761,7 +761,12 @@
       .portfolio-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 200px; }
     }
     @media (max-width: 560px) {
-      .portfolio-grid { grid-template-columns: 1fr; grid-auto-rows: 220px; }
+      .portfolio-grid { grid-template-columns: 1fr; grid-auto-rows: 240px; }
+      /* ОТКЛЮЧАЕМ span'ы на мобильных — иначе образуются пустоты */
+      .portfolio-item:nth-child(n) {
+        grid-column: span 1 !important;
+        grid-row: span 1 !important;
+      }
     }
 
     /* разные размеры — как в настоящем портфолио */
@@ -770,6 +775,20 @@
     .portfolio-item:nth-child(9)  { grid-column: span 2; grid-row: span 2; }
     .portfolio-item:nth-child(12) { grid-column: span 2; }
     .portfolio-item:nth-child(13) { grid-column: span 2; }
+
+    /* На 2-х колонках убираем span:2 чтобы не было пустот */
+    @media (max-width: 900px) and (min-width: 561px) {
+      .portfolio-item:nth-child(1),
+      .portfolio-item:nth-child(9) {
+        grid-column: span 2 !important;
+        grid-row: span 1 !important;
+      }
+      .portfolio-item:nth-child(5),
+      .portfolio-item:nth-child(12),
+      .portfolio-item:nth-child(13) {
+        grid-column: span 2 !important;
+      }
+    }
 
     .portfolio-item {
       position: relative;
