@@ -247,6 +247,133 @@
       opacity: 1;
     }
 
+    /* ═══════════════════════════════════════════
+       3D ЭФФЕКТЫ — ГЛАВНАЯ МАГИЯ
+       ═══════════════════════════════════════════ */
+
+    /* 3D перспектива для секций с карточками */
+    .services-list,
+    .portfolio-grid,
+    .stats-grid {
+      perspective: 1400px;
+    }
+
+    /* 3D-наклон карточек услуг */
+    .service-row {
+      transform-style: preserve-3d;
+      transition: transform .4s cubic-bezier(.16,1,.3,1), background .25s, box-shadow .4s;
+      will-change: transform;
+    }
+    .service-row.tilt-active {
+      box-shadow: 0 30px 60px rgba(0,0,0,.45), 0 0 0 1px rgba(212,180,131,.25);
+      z-index: 5;
+    }
+    .service-row .service-row-icon,
+    .service-row .service-row-body,
+    .service-row .service-row-arrow {
+      transform: translateZ(30px);
+      transition: transform .4s cubic-bezier(.16,1,.3,1);
+    }
+
+    /* 3D-наклон карточек портфолио */
+    .portfolio-item {
+      transform-style: preserve-3d;
+      will-change: transform;
+    }
+    .portfolio-item .portfolio-overlay,
+    .portfolio-item .portfolio-num {
+      transform: translateZ(40px);
+    }
+    .portfolio-item img {
+      transition: transform .5s cubic-bezier(.16,1,.3,1);
+    }
+
+    /* блик-отражение на карточках при 3D-наклоне */
+    .tilt-shine {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: radial-gradient(circle at var(--sx,50%) var(--sy,50%), rgba(255,255,255,.18) 0%, transparent 45%);
+      opacity: 0;
+      transition: opacity .3s;
+      pointer-events: none;
+      z-index: 3;
+      mix-blend-mode: overlay;
+    }
+    .tilt-active .tilt-shine { opacity: 1; }
+
+    /* 3D-параллакс логотипа (глубина) */
+    .logo-wrap {
+      transform-style: preserve-3d;
+      transition: transform .5s cubic-bezier(.16,1,.3,1);
+      will-change: transform;
+    }
+
+    /* плавающая 3D-анимация логотипа в покое */
+    @keyframes logoFloat3D {
+      0%, 100% { transform: translateY(0) rotateX(0) rotateY(0); }
+      50% { transform: translateY(-12px) rotateX(3deg) rotateY(-2deg); }
+    }
+    .logo-wrap.idle-float {
+      animation: logoFloat3D 6s ease-in-out infinite;
+    }
+
+    /* 3D-появление секций при прокрутке */
+    .reveal-3d {
+      opacity: 0;
+      transform: perspective(1200px) rotateX(12deg) translateY(50px);
+      transition: opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1);
+      transform-origin: center bottom;
+    }
+    .reveal-3d.visible {
+      opacity: 1;
+      transform: perspective(1200px) rotateX(0) translateY(0);
+    }
+
+    /* 3D-вращение цифр статистики */
+    .stat-num, .about-stat-num {
+      display: inline-block;
+      transition: transform .5s cubic-bezier(.16,1,.3,1);
+    }
+    .about-stat-item:hover .about-stat-num {
+      transform: scale(1.1) rotateY(360deg);
+    }
+
+    /* свечение-ореол за логотипом */
+    .logo-aura {
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 500px; height: 500px;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(circle, rgba(212,180,131,.12) 0%, rgba(42,110,66,.08) 35%, transparent 65%);
+      filter: blur(40px);
+      pointer-events: none;
+      z-index: 0;
+      animation: auraPulse 5s ease-in-out infinite;
+    }
+    @keyframes auraPulse {
+      0%, 100% { transform: translate(-50%,-50%) scale(1); opacity: .7; }
+      50% { transform: translate(-50%,-50%) scale(1.15); opacity: 1; }
+    }
+
+    /* 3D глубина hero-контента (parallax-слои) */
+    .hero-content-3d {
+      transform-style: preserve-3d;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* кнопки с 3D-подъёмом */
+    .btn-primary, .btn-outline {
+      transform-style: preserve-3d;
+    }
+
+    @media (max-width: 768px) {
+      /* на телефоне 3D-наклон отключаем — оставляем плавность */
+      .service-row.tilt-active { transform: none !important; box-shadow: none; }
+      .logo-wrap.idle-float { animation: none; }
+    }
+
     /* ── LOGO SWITCHER ───────────────────────── */
     .logo-switcher {
       display: flex;
@@ -1177,6 +1304,9 @@
   <div class="hero-side-text left">Рекламно-производственная компания · г. Снежинск · Est. 2000</div>
   <div class="hero-side-text right">Вывески · Печать · Фрезеровка · Лазерная резка · Сувениры</div>
 
+  <!-- Свечение-ореол за логотипом -->
+  <div class="logo-aura"></div>
+
   <!-- Переключатель логотипов -->
   <div class="logo-switcher">
     <button class="logo-switch-btn active" onclick="switchLogo(0)" title="Классический">●</button>
@@ -1754,7 +1884,8 @@
   }
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox({ target: document.getElementById('lightbox') }); });
 
-  // ═══ ПРОГРЕСС-БАР ═══
+  // ═══ ПРОГРЕСС-БАР + 3D-ПАРАЛЛАКС ГЛУБИНЫ HERO ═══
+  const heroEl = document.querySelector('.hero');
   window.addEventListener('scroll', () => {
     const h = document.documentElement;
     const scrolled = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
@@ -1762,6 +1893,28 @@
     const top = document.getElementById('scrollTop');
     if (h.scrollTop > 500) top.classList.add('show');
     else top.classList.remove('show');
+
+    // 3D-параллакс: hero-контент уходит вглубь и тускнеет при прокрутке
+    const sy = h.scrollTop;
+    if (sy < window.innerHeight && heroEl) {
+      const k = sy / window.innerHeight;
+      const visible = document.querySelector('.logo-variant:not([style*="display: none"])') ||
+                      document.querySelector('.logo-wrap');
+      if (visible && !visible.matches(':hover')) {
+        if (k < 0.02) {
+          // у самого верха — отдаём управление плавающей анимации
+          visible.style.opacity = '';
+          visible.style.transform = '';
+        } else {
+          visible.style.opacity = (1 - k * 1.1).toFixed(2);
+          visible.style.transform = `perspective(900px) translateZ(${-k*200}px) translateY(${k*60}px)`;
+        }
+      }
+      document.querySelectorAll('.hero-corner').forEach(c => {
+        c.style.transform = `scale(${1-k*0.25})`;
+        c.style.opacity = Math.max(0, 0.7 - k).toFixed(2);
+      });
+    }
   });
 
   // ═══ КАСТОМНЫЙ КУРСОР ═══
@@ -1820,15 +1973,73 @@
     });
   });
 
-  // ═══ ПАРАЛЛАКС ЛОГОТИПА ═══
-  const logoWrap = document.querySelector('.logo-wrap');
-  if (logoWrap) {
-    document.addEventListener('mousemove', e => {
-      const x = (e.clientX / window.innerWidth - 0.5) * 20;
-      const y = (e.clientY / window.innerHeight - 0.5) * 20;
-      logoWrap.style.transform = `translate(${x}px, ${y}px)`;
+  // ═══ 3D-ПАРАЛЛАКС ЛОГОТИПА (поворот в пространстве за мышью) ═══
+  const heroSection = document.querySelector('.hero');
+  let logoIdleTimer;
+  function setLogoIdle(on) {
+    document.querySelectorAll('.logo-wrap').forEach(l => {
+      l.classList.toggle('idle-float', on);
     });
   }
+  setLogoIdle(true);
+  if (heroSection) {
+    heroSection.addEventListener('mousemove', e => {
+      const visible = document.querySelector('.logo-variant:not([style*="display: none"])') ||
+                      document.querySelector('.logo-wrap');
+      if (!visible) return;
+      setLogoIdle(false);
+      clearTimeout(logoIdleTimer);
+      const rx = (e.clientY / window.innerHeight - 0.5) * -22;
+      const ry = (e.clientX / window.innerWidth - 0.5) * 28;
+      const tx = (e.clientX / window.innerWidth - 0.5) * 24;
+      visible.style.transform =
+        `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) translateX(${tx}px)`;
+      // ореол следует за курсором
+      const aura = document.querySelector('.logo-aura');
+      if (aura) {
+        aura.style.transform =
+          `translate(calc(-50% + ${tx*1.5}px), calc(-50% + ${(e.clientY/window.innerHeight-0.5)*20}px))`;
+      }
+      logoIdleTimer = setTimeout(() => {
+        visible.style.transform = '';
+        setLogoIdle(true);
+      }, 600);
+    });
+  }
+
+  // ═══ 3D-TILT КАРТОЧЕК (наклон за мышью с бликом) ═══
+  const isTouch = window.matchMedia('(hover: none)').matches || window.innerWidth < 768;
+  function attachTilt(selector, maxTilt) {
+    if (isTouch) return; // на телефонах 3D-наклон не нужен
+    document.querySelectorAll(selector).forEach(card => {
+      // добавляем блик
+      let shine = card.querySelector('.tilt-shine');
+      if (!shine) {
+        shine = document.createElement('div');
+        shine.className = 'tilt-shine';
+        card.appendChild(shine);
+      }
+      card.addEventListener('mousemove', e => {
+        const r = card.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width;
+        const py = (e.clientY - r.top) / r.height;
+        const rx = (py - 0.5) * -maxTilt * 2;
+        const ry = (px - 0.5) * maxTilt * 2;
+        card.classList.add('tilt-active');
+        const baseTransform = card.dataset.baseTilt || '';
+        card.style.transform =
+          `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-6px) scale(1.02)`;
+        shine.style.setProperty('--sx', (px*100)+'%');
+        shine.style.setProperty('--sy', (py*100)+'%');
+      });
+      card.addEventListener('mouseleave', () => {
+        card.classList.remove('tilt-active');
+        card.style.transform = '';
+      });
+    });
+  }
+  attachTilt('.service-row', 6);
+  attachTilt('.portfolio-item', 8);
 
   // Reveal on scroll
   const revealObserver = new IntersectionObserver((entries) => {
@@ -1840,8 +2051,17 @@
     });
   }, { threshold: 0.12 });
 
-  document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach((el, i) => {
+  document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-3d').forEach((el, i) => {
     revealObserver.observe(el);
+  });
+
+  // навешиваем 3D-появление на заголовки секций
+  document.querySelectorAll('.section-title').forEach(el => {
+    if (!el.classList.contains('reveal-3d')) {
+      el.classList.remove('reveal');
+      el.classList.add('reveal-3d');
+      revealObserver.observe(el);
+    }
   });
 
   // Staggered cards
