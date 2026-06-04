@@ -159,8 +159,8 @@
       filter: blur(70px);
       will-change: transform;
     }
-    .g-orb.green { background: radial-gradient(circle, rgba(64,150,92,.55) 0%, transparent 70%); }
-    .g-orb.gold  { background: radial-gradient(circle, rgba(212,180,131,.32) 0%, transparent 70%); }
+    .g-orb.green { background: radial-gradient(circle, rgba(72,165,102,.7) 0%, transparent 70%); }
+    .g-orb.gold  { background: radial-gradient(circle, rgba(212,180,131,.45) 0%, transparent 70%); }
     .g-orb.g1 { width: 500px; height: 500px; top: 5%;   left: -8%;  animation: gDrift1 22s ease-in-out infinite; }
     .g-orb.g2 { width: 450px; height: 450px; top: 30%;  right: -10%; animation: gDrift2 26s ease-in-out infinite; }
     .g-orb.g3 { width: 400px; height: 400px; bottom: 8%; left: -6%;  animation: gDrift3 20s ease-in-out infinite; }
@@ -177,6 +177,34 @@
     @keyframes gDrift3 {
       0%,100% { transform: translate(0,0) scale(1); }
       50% { transform: translate(60px,-50px) scale(1.2); }
+    }
+
+    /* ═══ БОКОВОЙ ДЕКОР: вращающиеся золотые кольца ═══ */
+    .side-decor {
+      position: fixed;
+      top: 50%;
+      width: 600px; height: 600px;
+      z-index: -1;
+      pointer-events: none;
+      opacity: .5;
+    }
+    .side-decor.left  { left: -300px;  transform: translateY(-50%); }
+    .side-decor.right { right: -300px; transform: translateY(-50%); }
+    .side-decor svg { width: 100%; height: 100%; }
+    .side-decor .ring-rot { transform-origin: center; }
+    .side-decor.left .ring-rot  { animation: ringSpin 60s linear infinite; }
+    .side-decor.right .ring-rot { animation: ringSpin 75s linear infinite reverse; }
+    @keyframes ringSpin { to { transform: rotate(360deg); } }
+    @media (max-width: 1100px) { .side-decor { display: none; } }
+
+    /* виньетка по краям экрана для глубины */
+    .vignette {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse 80% 90% at 50% 50%, transparent 55%, rgba(5,12,8,.55) 100%);
     }
 
     /* ═══ ПРОГРЕСС-БАР ПРОКРУТКИ ═══ */
@@ -596,6 +624,16 @@
       padding: 120px 20px 90px;
       position: relative;
       overflow: hidden;
+      perspective: 1200px;
+      transform-style: preserve-3d;
+    }
+    /* плавность 5D-слоёв */
+    .hero-badge, .hero-est, .hero-title, .hero-tag, .hero-actions {
+      transition: transform .3s cubic-bezier(.16,1,.3,1);
+      will-change: transform;
+    }
+    .hero-corner {
+      transition: transform .4s cubic-bezier(.16,1,.3,1), opacity .3s;
     }
     .hero::before {
       content: '';
@@ -1640,6 +1678,33 @@
   <div class="g-orb green g5"></div>
 </div>
 
+<!-- ═══ БОКОВОЙ ДЕКОР: вращающиеся кольца ═══ -->
+<div class="side-decor left">
+  <svg viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+    <g class="ring-rot">
+      <circle cx="300" cy="300" r="290" fill="none" stroke="rgba(212,180,131,.18)" stroke-width="1"/>
+      <circle cx="300" cy="300" r="240" fill="none" stroke="rgba(212,180,131,.12)" stroke-width="1" stroke-dasharray="6 12"/>
+      <circle cx="300" cy="300" r="190" fill="none" stroke="rgba(42,110,66,.25)" stroke-width="1.5"/>
+      <circle cx="300" cy="10" r="5" fill="rgba(212,180,131,.5)"/>
+      <circle cx="300" cy="110" r="3" fill="rgba(212,180,131,.4)"/>
+    </g>
+  </svg>
+</div>
+<div class="side-decor right">
+  <svg viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+    <g class="ring-rot">
+      <circle cx="300" cy="300" r="290" fill="none" stroke="rgba(212,180,131,.18)" stroke-width="1"/>
+      <circle cx="300" cy="300" r="240" fill="none" stroke="rgba(212,180,131,.12)" stroke-width="1" stroke-dasharray="6 12"/>
+      <circle cx="300" cy="300" r="190" fill="none" stroke="rgba(42,110,66,.25)" stroke-width="1.5"/>
+      <circle cx="300" cy="590" r="5" fill="rgba(212,180,131,.5)"/>
+      <circle cx="300" cy="490" r="3" fill="rgba(212,180,131,.4)"/>
+    </g>
+  </svg>
+</div>
+
+<!-- виньетка для глубины -->
+<div class="vignette"></div>
+
 <!-- ═══ ПРОГРЕСС-БАР ПРОКРУТКИ ═══ -->
 <div class="scroll-progress" id="scrollProgress"></div>
 
@@ -2419,28 +2484,63 @@
     });
   }
   setLogoIdle(true);
+
+  // 5D многослойный параллакс: каждый слой со своей глубиной
+  const parallaxLayers = [
+    { el: '.hero-badge',      depth: 18 },
+    { el: '.hero-est',        depth: 14 },
+    { el: '.hero-title',      depth: 26 },
+    { el: '.hero-tag',        depth: 12 },
+    { el: '.hero-actions',    depth: 20 },
+    { el: '.hero-corner.tl',  depth: -30 },
+    { el: '.hero-corner.tr',  depth: -30 },
+    { el: '.hero-corner.bl',  depth: -30 },
+    { el: '.hero-corner.br',  depth: -30 },
+  ];
+
   if (heroSection) {
     heroSection.addEventListener('mousemove', e => {
+      const nx = e.clientX / window.innerWidth - 0.5;
+      const ny = e.clientY / window.innerHeight - 0.5;
+
+      // ЛОГОТИП — главный 3D-слой
       const visible = document.querySelector('.logo-variant:not([style*="display: none"])') ||
                       document.querySelector('.logo-wrap');
-      if (!visible) return;
-      setLogoIdle(false);
-      clearTimeout(logoIdleTimer);
-      const rx = (e.clientY / window.innerHeight - 0.5) * -22;
-      const ry = (e.clientX / window.innerWidth - 0.5) * 28;
-      const tx = (e.clientX / window.innerWidth - 0.5) * 24;
-      visible.style.transform =
-        `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) translateX(${tx}px)`;
-      // ореол следует за курсором
-      const aura = document.querySelector('.logo-aura');
-      if (aura) {
-        aura.style.transform =
-          `translate(calc(-50% + ${tx*1.5}px), calc(-50% + ${(e.clientY/window.innerHeight-0.5)*20}px))`;
+      if (visible) {
+        setLogoIdle(false);
+        clearTimeout(logoIdleTimer);
+        const rx = ny * -22;
+        const ry = nx * 28;
+        const tx = nx * 24;
+        visible.style.transform =
+          `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) translateX(${tx}px)`;
+        const aura = document.querySelector('.logo-aura');
+        if (aura) {
+          aura.style.transform =
+            `translate(calc(-50% + ${tx*1.5}px), calc(-50% + ${ny*20}px))`;
+        }
+        logoIdleTimer = setTimeout(() => {
+          visible.style.transform = '';
+          setLogoIdle(true);
+        }, 600);
       }
-      logoIdleTimer = setTimeout(() => {
-        visible.style.transform = '';
-        setLogoIdle(true);
-      }, 600);
+
+      // ОСТАЛЬНЫЕ СЛОИ — параллакс по глубине
+      parallaxLayers.forEach(layer => {
+        document.querySelectorAll(layer.el).forEach(node => {
+          const baseTransform = node.classList.contains('hero-corner') ? node.dataset.base || '' : '';
+          node.style.transform =
+            `translate3d(${nx * layer.depth}px, ${ny * layer.depth}px, 0)`;
+        });
+      });
+    });
+
+    heroSection.addEventListener('mouseleave', () => {
+      parallaxLayers.forEach(layer => {
+        document.querySelectorAll(layer.el).forEach(node => {
+          node.style.transform = '';
+        });
+      });
     });
   }
 
