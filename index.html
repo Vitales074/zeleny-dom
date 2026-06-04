@@ -77,6 +77,51 @@
     @keyframes loadBar { to { width: 100%; } }
     @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
+    /* ═══ ВОЛНЫ-РАЗДЕЛИТЕЛИ МЕЖДУ СЕКЦИЯМИ ═══ */
+    .wave-divider {
+      position: relative;
+      width: 100%;
+      height: 80px;
+      margin: -40px 0;
+      z-index: 3;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .wave-divider svg {
+      position: absolute;
+      width: 100%; height: 100%;
+      left: 0; top: 0;
+    }
+    .wave-line {
+      fill: none;
+      stroke: rgba(212,180,131,.35);
+      stroke-width: 2;
+    }
+    .wave-line.thin { stroke: rgba(212,180,131,.15); stroke-width: 1.5; }
+    /* плавное колыхание волны */
+    .wave-anim {
+      animation: waveFloat 8s ease-in-out infinite;
+    }
+    @keyframes waveFloat {
+      0%, 100% { transform: translateX(0); }
+      50% { transform: translateX(-40px); }
+    }
+    /* золотой ромбик по центру волны */
+    .wave-diamond {
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 12px; height: 12px;
+      transform: translate(-50%,-50%) rotate(45deg);
+      background: var(--gold);
+      box-shadow: 0 0 20px rgba(212,180,131,.6);
+      z-index: 4;
+      animation: diamondPulse 3s ease-in-out infinite;
+    }
+    @keyframes diamondPulse {
+      0%,100% { box-shadow: 0 0 20px rgba(212,180,131,.6); transform: translate(-50%,-50%) rotate(45deg) scale(1); }
+      50% { box-shadow: 0 0 30px rgba(212,180,131,.9); transform: translate(-50%,-50%) rotate(45deg) scale(1.2); }
+    }
+
     /* ═══ ЖИВОЙ MESH-ФОН (медленно переливается) ═══ */
     .mesh-bg {
       position: fixed;
@@ -1303,27 +1348,60 @@
 
     .about-title {
       font-family: 'Cinzel', serif;
-      font-size: clamp(2rem, 4.5vw, 3rem);
+      font-size: clamp(2rem, 4.5vw, 3.2rem);
       font-weight: 700;
-      color: var(--white);
       line-height: 1.2;
       margin-bottom: 24px;
+      /* переливающийся золотой акцент */
+      background: linear-gradient(110deg, #fff 0%, #f0d080 30%, #fff6d8 45%, #d4b483 60%, #fff 85%);
+      background-size: 220% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shimmerText 6s linear infinite;
     }
     .about-text {
-      font-size: 1rem;
-      color: rgba(240,234,216,.55);
-      line-height: 1.9;
+      font-size: 1.12rem;
+      color: rgba(240,234,216,.78);
+      line-height: 1.95;
       margin-bottom: 32px;
+      position: relative;
+      padding-left: 22px;
+      border-left: 3px solid;
+      border-image: linear-gradient(to bottom, var(--gold), rgba(42,110,66,.6)) 1;
+    }
+    /* ключевые слова в тексте подсвечиваются золотом */
+    .about-text b, .about-text strong {
+      color: var(--gold);
+      font-weight: 600;
+      -webkit-text-fill-color: var(--gold);
     }
     .about-tags { display: flex; flex-wrap: wrap; gap: 10px; }
     .about-tag {
-      padding: 7px 16px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 18px;
+      border-radius: 30px;
+      font-size: .74rem;
+      font-weight: 600;
+      letter-spacing: .06em;
+      color: var(--cream);
+      background: rgba(255,255,255,.04);
       border: 1px solid rgba(212,180,131,.25);
-      border-radius: 2px;
-      font-size: .7rem;
-      letter-spacing: .1em;
-      color: rgba(212,180,131,.7);
-      text-transform: uppercase;
+      backdrop-filter: blur(8px);
+      transition: all .3s;
+    }
+    .about-tag::before {
+      content: '✓';
+      color: var(--gold);
+      font-weight: 700;
+    }
+    .about-tag:hover {
+      border-color: var(--gold);
+      background: rgba(212,180,131,.12);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0,0,0,.3);
     }
 
     .about-right { display: flex; flex-direction: column; gap: 28px; }
@@ -1732,6 +1810,15 @@
   <div class="scroll-hint">прокрутите вниз</div>
 </section>
 
+<!-- волна-разделитель -->
+<div class="wave-divider">
+  <svg viewBox="0 0 1440 80" preserveAspectRatio="none">
+    <path class="wave-line wave-anim" d="M-100,40 C200,10 400,70 720,40 C1040,10 1240,70 1540,40"/>
+    <path class="wave-line thin wave-anim" style="animation-delay:-2s" d="M-100,50 C250,20 450,75 720,48 C1000,20 1200,72 1540,48"/>
+  </svg>
+  <div class="wave-diamond"></div>
+</div>
+
 <!-- ═══════════════ SERVICES ═══════════════ -->
 <section class="services" id="services">
   <div class="section-border top"></div>
@@ -1868,6 +1955,15 @@
 
   </div>
 </section>
+
+<!-- волна-разделитель -->
+<div class="wave-divider">
+  <svg viewBox="0 0 1440 80" preserveAspectRatio="none">
+    <path class="wave-line wave-anim" d="M-100,40 C200,70 400,10 720,40 C1040,70 1240,10 1540,40"/>
+    <path class="wave-line thin wave-anim" style="animation-delay:-2s" d="M-100,48 C250,75 450,15 720,45 C1000,72 1200,18 1540,45"/>
+  </svg>
+  <div class="wave-diamond"></div>
+</div>
 
 <!-- ═══════════════ PORTFOLIO ═══════════════ -->
 <section class="portfolio" id="portfolio">
@@ -2037,6 +2133,15 @@
   </div>
 </div>
 
+<!-- волна-разделитель -->
+<div class="wave-divider">
+  <svg viewBox="0 0 1440 80" preserveAspectRatio="none">
+    <path class="wave-line wave-anim" d="M-100,40 C200,10 400,70 720,40 C1040,10 1240,70 1540,40"/>
+    <path class="wave-line thin wave-anim" style="animation-delay:-2s" d="M-100,50 C250,20 450,75 720,48 C1000,20 1200,72 1540,48"/>
+  </svg>
+  <div class="wave-diamond"></div>
+</div>
+
 <!-- ═══════════════ STATS ═══════════════ -->
 <section class="stats" id="stats">
   <div class="section-border top"></div>
@@ -2048,7 +2153,7 @@
       <div class="about-left reveal-left">
         <p class="about-label">О компании</p>
         <h2 class="about-title">Делаем рекламу<br>которая работает</h2>
-        <p class="about-text">С 2000 года мы помогаем бизнесу в Снежинске и по всей России создавать яркие, качественные и долговечные рекламные материалы. Собственное производство, современное оборудование и команда профессионалов.</p>
+        <p class="about-text">С <b>2000 года</b> мы помогаем бизнесу в Снежинске и по всей России создавать яркие, качественные и долговечные рекламные материалы. <b>Собственное производство</b>, современное оборудование и команда профессионалов.</p>
         <div class="about-tags">
           <span class="about-tag">Собственное производство</span>
           <span class="about-tag">Точно в срок</span>
@@ -2085,6 +2190,15 @@
 
   </div>
 </section>
+
+<!-- волна-разделитель -->
+<div class="wave-divider">
+  <svg viewBox="0 0 1440 80" preserveAspectRatio="none">
+    <path class="wave-line wave-anim" d="M-100,40 C200,70 400,10 720,40 C1040,70 1240,10 1540,40"/>
+    <path class="wave-line thin wave-anim" style="animation-delay:-2s" d="M-100,48 C250,75 450,15 720,45 C1000,72 1200,18 1540,45"/>
+  </svg>
+  <div class="wave-diamond"></div>
+</div>
 
 <!-- ═══════════════ CONTACT ═══════════════ -->
 <section class="contact" id="contact">
