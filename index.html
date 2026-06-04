@@ -2598,6 +2598,62 @@
   attachTilt('.about-tag', 8);
   attachTilt('.social-btn', 8);
 
+  // ═══ ПАРАЛЛАКС ЗАГОЛОВКОВ И СОДЕРЖИМОГО СЕКЦИЙ (как в шапке) ═══
+  function parallaxGroup(triggerSel, items) {
+    if (isTouch) return;
+    const trigger = document.querySelector(triggerSel);
+    if (!trigger) return;
+    // плавность
+    items.forEach(it => {
+      document.querySelectorAll(it.sel).forEach(n => {
+        n.style.transition = 'transform .4s cubic-bezier(.16,1,.3,1)';
+        n.style.willChange = 'transform';
+      });
+    });
+    trigger.addEventListener('mousemove', e => {
+      const r = trigger.getBoundingClientRect();
+      const nx = (e.clientX - r.left) / r.width - 0.5;
+      const ny = (e.clientY - r.top) / r.height - 0.5;
+      items.forEach(it => {
+        document.querySelectorAll(it.sel).forEach(n => {
+          n.style.transform = `translate3d(${nx*it.depth}px, ${ny*it.depth}px, 0)`;
+        });
+      });
+    });
+    trigger.addEventListener('mouseleave', () => {
+      items.forEach(it => {
+        document.querySelectorAll(it.sel).forEach(n => { n.style.transform = ''; });
+      });
+    });
+  }
+
+  // Услуги — заголовок 5D
+  parallaxGroup('.services-header', [
+    { sel: '.services-header-left .big-num', depth: 40 },
+    { sel: '.services-header-left .section-title', depth: 22 },
+    { sel: '.services-header-right p', depth: 16 },
+    { sel: '.services-tagline', depth: 10 },
+  ]);
+  // Портфолио — заголовок
+  parallaxGroup('#portfolio .section-inner', [
+    { sel: '#portfolio .section-title', depth: 26 },
+    { sel: '#portfolio .divider', depth: 14 },
+    { sel: '#portfolio .section-sub', depth: 18 },
+  ]);
+  // О нас — заголовок и текст
+  parallaxGroup('.about-left', [
+    { sel: '.about-label', depth: 14 },
+    { sel: '.about-title', depth: 28 },
+    { sel: '.about-text', depth: 16 },
+    { sel: '.about-tags', depth: 10 },
+  ]);
+  // Контакты — заголовок
+  parallaxGroup('#contact .section-inner', [
+    { sel: '#contact .section-title', depth: 26 },
+    { sel: '#contact .divider', depth: 14 },
+    { sel: '#contact .section-sub', depth: 18 },
+  ]);
+
   // Reveal on scroll
   const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach((entry, i) => {
