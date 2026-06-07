@@ -487,29 +487,6 @@
       .logo-wrap.idle-float { animation: none; }
     }
 
-    /* ── LOGO SWITCHER ───────────────────────── */
-    .logo-switcher {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 16px;
-      align-items: center;
-    }
-    .logo-switch-btn {
-      background: none;
-      border: 1.5px solid rgba(212,180,131,.3);
-      color: rgba(212,180,131,.4);
-      width: 28px; height: 28px;
-      border-radius: 50%;
-      cursor: pointer;
-      font-size: .5rem;
-      transition: all .25s;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .logo-switch-btn:hover { border-color: var(--gold); color: var(--gold); }
-    .logo-switch-btn.active { border-color: var(--gold); color: var(--gold); background: rgba(212,180,131,.12); box-shadow: 0 0 10px rgba(212,180,131,.3); }
-    .logo-switch-btn::before { content: attr(title); position: absolute; bottom: -22px; font-size: .6rem; color: var(--gold); opacity: 0; transition: opacity .2s; letter-spacing: .1em; white-space: nowrap; }
-    .logo-switch-btn:hover::before { opacity: 1; }
-
     /* ── NAV ──────────────────────────────────── */
     nav {
       position: fixed;
@@ -1666,36 +1643,6 @@
     }
     .social-btn:hover { border-color: var(--gold); color: var(--gold); background: rgba(212,180,131,.06); }
 
-    .map-box {
-      border: 1px solid rgba(212,180,131,.18);
-      border-radius: 4px;
-      height: 220px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 14px;
-      background: rgba(42,110,66,.08);
-      text-align: center;
-      padding: 24px;
-      margin-bottom: 32px;
-    }
-    .map-box p { font-size: .82rem; color: rgba(240,234,216,.5); line-height: 1.5; }
-    .map-box a {
-      display: inline-block;
-      padding: 9px 22px;
-      border: 1px solid rgba(212,180,131,.4);
-      border-radius: 2px;
-      color: var(--gold);
-      font-size: .75rem;
-      font-weight: 600;
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      text-decoration: none;
-      transition: all .25s;
-    }
-    .map-box a:hover { background: rgba(212,180,131,.1); }
-
     /* ── FOOTER ───────────────────────────────── */
     footer {
       background: #060e08;
@@ -1770,7 +1717,7 @@
 <button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Наверх">▲</button>
 
 <!-- ═══ WHATSAPP ═══ -->
-<a href="https://wa.me/79194098406" target="_blank" class="whatsapp-float" title="Написать в WhatsApp">
+<a href="https://wa.me/79194098406" target="_blank" rel="noopener noreferrer" class="whatsapp-float" title="Написать в WhatsApp">
   <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.528 5.855L0 24l6.335-1.508A11.934 11.934 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg>
 </a>
 
@@ -2005,7 +1952,7 @@
       </div>
       <div style="display:flex; gap:12px; flex-wrap:wrap; flex-shrink:0;">
         <a href="tel:+79194098406" class="btn-primary" style="padding:12px 28px; font-size:.74rem;">📞 Позвонить</a>
-        <a href="https://wa.me/79194098406" target="_blank" class="btn-outline" style="padding:11px 24px; font-size:.74rem;">WhatsApp</a>
+        <a href="https://wa.me/79194098406" target="_blank" rel="noopener noreferrer" class="btn-outline" style="padding:11px 24px; font-size:.74rem;">WhatsApp</a>
       </div>
     </div>
 
@@ -2048,7 +1995,7 @@
 
       <!-- 1 -->
       <div class="portfolio-item" data-cat="sign" onclick="openLightbox('work1.jpg','Адресные таблички · Многослойная адресная табличка с подсветкой. Композит, акрил.')">
-        <img src="work1.jpg" alt="Адресная табличка с подсветкой" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <img src="work1.jpg" alt="Адресная табличка с подсветкой" loading="lazy" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
         <div class="portfolio-placeholder" style="display:none"><span class="ph-icon">🏠</span><span>Сохраните сюда<br><b>work1.jpg</b></span></div>
         <div class="portfolio-overlay">
           <div class="portfolio-cat">Таблички и вывески</div>
@@ -2058,7 +2005,7 @@
 
       <!-- 2 -->
       <div class="portfolio-item" data-cat="souvenir" onclick="openLightbox('work2.jpg','Сувенирная продукция · Символ Нового Года 2026 — подковы и фигурки из зеркального акрила и прозрачного акрила.')">
-        <img src="work2.jpg" alt="Сувениры — подковы" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <img src="work2.jpg" alt="Сувениры — подковы" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
         <div class="portfolio-placeholder" style="display:none"><span class="ph-icon">🎁</span><span>Сохраните сюда<br><b>work2.jpg</b></span></div>
         <div class="portfolio-overlay">
           <div class="portfolio-cat">Сувенирная продукция</div>
@@ -2068,7 +2015,7 @@
 
       <!-- 3 -->
       <div class="portfolio-item" data-cat="letters" onclick="openLightbox('work3.jpg','Объёмные буквы · Вывеска «БЮРО 1010» — объёмные плоские буквы из металла, изготовление и монтаж в Екатеринбурге.')">
-        <img src="work3.jpg" alt="Объёмные буквы БЮРО 1010" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <img src="work3.jpg" alt="Объёмные буквы БЮРО 1010" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
         <div class="portfolio-placeholder" style="display:none"><span class="ph-icon">🔤</span><span>Сохраните сюда<br><b>work3.jpg</b></span></div>
         <div class="portfolio-overlay">
           <div class="portfolio-cat">Объёмные буквы</div>
@@ -2078,7 +2025,7 @@
 
       <!-- 4 -->
       <div class="portfolio-item" data-cat="souvenir" onclick="openLightbox('work4.jpg','Сувенирная продукция · Корпоративные сувениры для НПП Механика — фигурки из зеркального акрила с гравировкой.')">
-        <img src="work4.jpg" alt="Сувениры НПП Механика" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <img src="work4.jpg" alt="Сувениры НПП Механика" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
         <div class="portfolio-placeholder" style="display:none"><span class="ph-icon">🎁</span><span>Сохраните сюда<br><b>work4.jpg</b></span></div>
         <div class="portfolio-overlay">
           <div class="portfolio-cat">Сувенирная продукция</div>
@@ -2088,7 +2035,7 @@
 
       <!-- 5 -->
       <div class="portfolio-item" data-cat="letters" onclick="openLightbox('work5.jpg','Вывески · Объёмные световые буквы «МИР КРОВЛИ И ФАСАДНЫХ» на раме из профильной трубы.')">
-        <img src="work5.jpg" alt="Вывеска Мир Кровли" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <img src="work5.jpg" alt="Вывеска Мир Кровли" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
         <div class="portfolio-placeholder" style="display:none"><span class="ph-icon">💡</span><span>Сохраните сюда<br><b>work5.jpg</b></span></div>
         <div class="portfolio-overlay">
           <div class="portfolio-cat">Световые буквы</div>
@@ -2098,7 +2045,7 @@
 
       <!-- 6 -->
       <div class="portfolio-item" data-cat="sign" onclick="openLightbox('work6.jpg','Световая вывеска · Вывеска «Орхит» — световой короб с неоновыми элементами и подсветкой для магазина одежды.')">
-        <img src="work6.jpg" alt="Световая вывеска Орхит" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <img src="work6.jpg" alt="Световая вывеска Орхит" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
         <div class="portfolio-placeholder" style="display:none"><span class="ph-icon">💡</span><span>Сохраните сюда<br><b>work6.jpg</b></span></div>
         <div class="portfolio-overlay">
           <div class="portfolio-cat">Световые вывески</div>
@@ -2108,7 +2055,7 @@
 
       <!-- 7 -->
       <div class="portfolio-item" data-cat="auto" onclick="openLightbox('work7.jpg','Автомобильные наклейки · Брендирование заднего стекла — плоттерная резка, наклейка «Винтовые сваи. Изготовление и монтаж».')">
-        <img src="work7.jpg" alt="Наклейка на авто Винтовые сваи" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <img src="work7.jpg" alt="Наклейка на авто Винтовые сваи" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
         <div class="portfolio-placeholder" style="display:none"><span class="ph-icon">🚗</span><span>Сохраните сюда<br><b>work7.jpg</b></span></div>
         <div class="portfolio-overlay">
           <div class="portfolio-cat">Автомобильные наклейки</div>
@@ -2118,7 +2065,7 @@
 
       <!-- 8 -->
       <div class="portfolio-item" data-cat="sign" onclick="openLightbox('work8.jpg','Оформление магазина · Комплексное оформление точки продаж мебельной фабрики «Корона» — вывеска, баннеры, навигация.')">
-        <img src="work8.jpg" alt="Оформление магазина Корона" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <img src="work8.jpg" alt="Оформление магазина Корона" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
         <div class="portfolio-placeholder" style="display:none"><span class="ph-icon">🏪</span><span>Сохраните сюда<br><b>work8.jpg</b></span></div>
         <div class="portfolio-overlay">
           <div class="portfolio-cat">Оформление магазина</div>
@@ -2128,7 +2075,7 @@
 
       <!-- 9 -->
       <div class="portfolio-item" data-cat="print" onclick="openLightbox('work9.jpg','Широкоформатная печать · Уличный баннер для детейлинг-центра gls lab — печать на баннерной ткани, монтаж.')">
-        <img src="work9.jpg" alt="Баннер gls lab detailing" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <img src="work9.jpg" alt="Баннер gls lab detailing" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
         <div class="portfolio-placeholder" style="display:none"><span class="ph-icon">🖨️</span><span>Сохраните сюда<br><b>work9.jpg</b></span></div>
         <div class="portfolio-overlay">
           <div class="portfolio-cat">Широкоформатная печать</div>
@@ -2138,7 +2085,7 @@
 
       <!-- 10 -->
       <div class="portfolio-item" data-cat="letters" onclick="openLightbox('work10.jpg','Световые буквы · Навигационная вывеска «ТУАЛЕТ / WC» — объёмные световые буквы с LED-подсветкой желтого свечения.')">
-        <img src="work10.jpg" alt="Световые буквы ТУАЛЕТ WC" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <img src="work10.jpg" alt="Световые буквы ТУАЛЕТ WC" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
         <div class="portfolio-placeholder" style="display:none"><span class="ph-icon">🔤</span><span>Сохраните сюда<br><b>work10.jpg</b></span></div>
         <div class="portfolio-overlay">
           <div class="portfolio-cat">Световые буквы</div>
@@ -2148,7 +2095,7 @@
 
       <!-- 11 -->
       <div class="portfolio-item" data-cat="sign" onclick="openLightbox('work11.jpg','Вывески · Двусторонняя вывеска «Автосервис» — УФ-печать на жёстком материале с желтогоризонтальным дизайном.')">
-        <img src="work11.jpg" alt="Вывеска Автосервис" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <img src="work11.jpg" alt="Вывеска Автосервис" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
         <div class="portfolio-placeholder" style="display:none"><span class="ph-icon">🚗</span><span>Сохраните сюда<br><b>work11.jpg</b></span></div>
         <div class="portfolio-overlay">
           <div class="portfolio-cat">Вывески</div>
@@ -2158,7 +2105,7 @@
 
       <!-- 12 -->
       <div class="portfolio-item" data-cat="souvenir" onclick="openLightbox('work12.jpg','Сувенирная продукция · Деревянные магниты «Снежинск» — лазерная гравировка на спиле дерева.')">
-        <img src="work12.jpg" alt="Деревянные магниты Снежинск" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <img src="work12.jpg" alt="Деревянные магниты Снежинск" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
         <div class="portfolio-placeholder" style="display:none"><span class="ph-icon">🎁</span><span>Сохраните сюда<br><b>work12.jpg</b></span></div>
         <div class="portfolio-overlay">
           <div class="portfolio-cat">Сувенирная продукция</div>
@@ -2168,7 +2115,7 @@
 
       <!-- 13 -->
       <div class="portfolio-item" data-cat="print" onclick="openLightbox('work13.jpg','Широкоформатная печать · Баннер 8×2.2м — пляж с пальмами и океаном. Печать на баннерной ткани.')">
-        <img src="work13.jpg" alt="Баннер пляж пальмы" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <img src="work13.jpg" alt="Баннер пляж пальмы" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
         <div class="portfolio-placeholder" style="display:none"><span class="ph-icon">🌴</span><span>Сохраните сюда<br><b>work13.jpg</b></span></div>
         <div class="portfolio-overlay">
           <div class="portfolio-cat">Широкоформатная печать</div>
@@ -2347,11 +2294,11 @@
         <div class="form-row">
           <div class="form-field">
             <label>Ваше имя</label>
-            <input type="text" name="name" placeholder="Иван Иванов" required />
+            <input type="text" name="name" placeholder="Иван Иванов" autocomplete="name" required />
           </div>
           <div class="form-field">
             <label>Телефон</label>
-            <input type="tel" name="phone" placeholder="+7 900 000 00 00" required />
+            <input type="tel" name="phone" placeholder="+7 900 000 00 00" autocomplete="tel" required />
           </div>
           <div class="form-field">
             <label>Вид услуги</label>
