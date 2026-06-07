@@ -980,14 +980,33 @@
     }
     .services-tagline::after { content: ''; flex: 1; height: 1px; background: linear-gradient(to right, var(--gold), transparent); }
 
-    /* список услуг — стеклянные карточки (glassmorphism) */
+    /* BENTO-сетка услуг (тренд 2026) — плитки разного размера */
     .services-list {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(6, 1fr);
       gap: 14px;
       margin-bottom: 16px;
     }
-    @media (max-width: 640px) { .services-list { grid-template-columns: 1fr; } }
+    /* мозаика: ряды по 6 колонок, чередование размеров */
+    .service-row:nth-child(1)  { grid-column: span 4; }
+    .service-row:nth-child(2)  { grid-column: span 2; }
+    .service-row:nth-child(3)  { grid-column: span 2; }
+    .service-row:nth-child(4)  { grid-column: span 4; }
+    .service-row:nth-child(5)  { grid-column: span 3; }
+    .service-row:nth-child(6)  { grid-column: span 3; }
+    .service-row:nth-child(7)  { grid-column: span 2; }
+    .service-row:nth-child(8)  { grid-column: span 4; }
+    .service-row:nth-child(9)  { grid-column: span 3; }
+    .service-row:nth-child(10) { grid-column: span 3; }
+    .service-row:nth-child(11) { grid-column: span 2; }
+    .service-row:nth-child(12) { grid-column: span 4; }
+    @media (max-width: 900px) {
+      .services-list { grid-template-columns: repeat(2, 1fr); }
+      .service-row:nth-child(n) { grid-column: span 1 !important; }
+    }
+    @media (max-width: 560px) {
+      .services-list { grid-template-columns: 1fr; }
+    }
 
     .service-row {
       display: flex;
@@ -1438,6 +1457,38 @@
       transition: transform 1.2s ease;
     }
     .about-stat-fill.animated { transform: scaleX(1); }
+
+    /* ── ОТЗЫВЫ ── */
+    .reviews { background: linear-gradient(90deg, transparent 0%, rgba(8,22,14,.6) 18%, rgba(8,22,14,.6) 82%, transparent 100%); }
+    .reviews-grid {
+      display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; margin-top: 12px;
+    }
+    @media (max-width: 800px) { .reviews-grid { grid-template-columns: 1fr; } }
+    .review-card {
+      background: rgba(255,255,255,.035);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(212,180,131,.18);
+      border-radius: 16px; padding: 30px 26px;
+      position: relative;
+      transition: transform .35s cubic-bezier(.16,1,.3,1), box-shadow .35s, border-color .35s;
+    }
+    .review-card:hover { transform: translateY(-6px); border-color: rgba(212,180,131,.4); box-shadow: 0 20px 45px rgba(0,0,0,.4); }
+    .review-quote {
+      position: absolute; top: 12px; right: 20px;
+      font-family: 'Cinzel', serif; font-size: 3.5rem;
+      color: rgba(212,180,131,.2); line-height: 1;
+    }
+    .review-stars { color: var(--gold); font-size: 1rem; letter-spacing: 2px; margin-bottom: 14px; }
+    .review-text { font-size: 1rem; color: rgba(240,234,216,.75); line-height: 1.65; margin-bottom: 20px; font-style: italic; }
+    .review-author { display: flex; align-items: center; gap: 12px; }
+    .review-avatar {
+      width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--gold), #b8904a);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--green-dark); font-weight: 700; font-size: 1.1rem;
+    }
+    .review-name { font-weight: 700; color: var(--cream); font-size: .95rem; }
+    .review-role { font-size: .78rem; color: rgba(240,234,216,.45); }
 
     /* ── CONTACT ──────────────────────────────── */
     .contact { background: linear-gradient(90deg, transparent 0%, rgba(9,22,14,.72) 18%, rgba(9,22,14,.72) 82%, transparent 100%); }
@@ -2199,6 +2250,60 @@
   <svg viewBox="0 0 1440 80" preserveAspectRatio="none">
     <path class="wave-line wave-anim" d="M-100,40 C200,70 400,10 720,40 C1040,70 1240,10 1540,40"/>
     <path class="wave-line thin wave-anim" style="animation-delay:-2s" d="M-100,48 C250,75 450,15 720,45 C1000,72 1200,18 1540,45"/>
+  </svg>
+  <div class="wave-diamond"></div>
+</div>
+
+<!-- ═══════════════ REVIEWS ═══════════════ -->
+<section class="reviews" id="reviews">
+  <div class="section-border top"></div>
+  <div class="section-orbs">
+    <div class="orb green o1"></div>
+    <div class="orb gold o2"></div>
+  </div>
+  <div class="side-lines"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+  <div class="section-inner">
+    <h2 class="section-title reveal">Отзывы клиентов</h2>
+    <div class="divider reveal"><div class="divider-diamond"></div></div>
+    <p class="section-sub reveal">Нам доверяют бизнесы Снежинска и области</p>
+
+    <div class="reviews-grid">
+      <div class="review-card reveal">
+        <div class="review-quote">”</div>
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">Заказывали вывеску с объёмными буквами — сделали быстро и качественно. Монтаж аккуратный, выглядит дорого. Рекомендую!</div>
+        <div class="review-author">
+          <div class="review-avatar">С</div>
+          <div><div class="review-name">Сергей</div><div class="review-role">Магазин «Опиум»</div></div>
+        </div>
+      </div>
+      <div class="review-card reveal">
+        <div class="review-quote">”</div>
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">Печатали баннер 8 метров — яркие сочные цвета, плотный материал. Цена приятная, сроки выдержали. Спасибо за работу!</div>
+        <div class="review-author">
+          <div class="review-avatar">И</div>
+          <div><div class="review-name">Игорь</div><div class="review-role">Частный заказ</div></div>
+        </div>
+      </div>
+      <div class="review-card reveal">
+        <div class="review-quote">”</div>
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">Делали комплексное оформление магазина — вывеска, таблички, навигация. Всё в едином стиле, профессионально. Будем сотрудничать дальше.</div>
+        <div class="review-author">
+          <div class="review-avatar">Е</div>
+          <div><div class="review-name">Елена</div><div class="review-role">«Корона», мебель</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- волна -->
+<div class="wave-divider">
+  <svg viewBox="0 0 1440 80" preserveAspectRatio="none">
+    <path class="wave-line wave-anim" d="M-100,40 C200,10 400,70 720,40 C1040,10 1240,70 1540,40"/>
+    <path class="wave-line thin wave-anim" style="animation-delay:-2s" d="M-100,50 C250,20 450,75 720,48 C1000,20 1200,72 1540,48"/>
   </svg>
   <div class="wave-diamond"></div>
 </div>
